@@ -1,4 +1,4 @@
-# 🛡️ DetectX-PCB
+# DetectX-PCB
 
 ![Dashboard Preview](assets/dashboard.PNG)
 
@@ -6,7 +6,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - **Node.js**: v18.0 or higher
@@ -39,7 +39,7 @@ npm run dev -- -p 3001 --webpack
 
 ---
 
-## 🏗️ Solution Architecture
+## Solution Architecture
 
 DetectX-PCB utilizes a multi-layered architecture designed for high-throughput manufacturing environments.
 
@@ -81,7 +81,7 @@ graph TB
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend**: Next.js 14+, TypeScript, Tailwind CSS, Recharts, Three.js
 - **Backend**: FastAPI (Python), SQLModel (SQLite/PostgreSQL)
@@ -90,7 +90,7 @@ graph TB
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 - `/frontend`: Next.js dashboard and analytics interface.
 - `/backend`: FastAPI service, database models, and API endpoints.
@@ -99,7 +99,7 @@ graph TB
 
 ---
 
-## ⚠️ Troubleshooting
+## Troubleshooting
 
 - **Frontend Port**: The dashboard is configured to run on port `3001`. If port `3000` is used, ensure the backend CORS settings are updated.
 - **Turbopack Issues**: If you encounter native binding errors on Windows, run the frontend with the `--webpack` flag as shown in the startup instructions.
@@ -107,5 +107,5 @@ graph TB
 
 ---
 
-## 📄 License
+## License
 This project is part of the DetectX-PCB industrial suite. All rights reserved.
