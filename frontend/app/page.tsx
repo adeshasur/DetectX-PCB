@@ -62,129 +62,113 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="h-screen bg-[#030712] flex text-gray-100 selection:bg-blue-500/30 overflow-hidden text-sm">
+    <div className="h-screen bg-[#0b0f1a] flex text-slate-300 selection:bg-sky-500/30 overflow-hidden text-sm">
       {/* Sidebar */}
-      <aside className="w-60 border-r border-white/5 bg-gray-950/50 backdrop-blur-2xl p-5 flex flex-col gap-6 shrink-0">
+      <aside className="w-60 border-r border-slate-800 bg-[#0d121f] p-6 flex flex-col gap-8 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 pulse-glow">
-            <Cpu className="text-white" size={18} />
+          <div className="w-8 h-8 bg-sky-500 rounded flex items-center justify-center">
+            <Cpu className="text-slate-950" size={18} />
           </div>
-          <div>
-            <h1 className="text-lg font-black tracking-tighter leading-none">DetectX<span className="text-blue-500">PCB</span></h1>
-            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Protocol v4.2.0</p>
-          </div>
+          <h1 className="text-lg font-bold tracking-tight text-white">DetectX</h1>
         </div>
 
-        <nav className="flex flex-col gap-0.5">
-          <NavItem icon={<LayoutDashboard size={16} />} label="Dashboard" active />
-          <NavItem icon={<Activity size={16} />} label="Live Analytics" />
-          <NavItem icon={<ShieldAlert size={16} />} label="Security Vault" />
-          <NavItem icon={<Layers size={16} />} label="Line Control" />
-          <NavItem icon={<BarChart3 size={16} />} label="Yield Reports" />
-          <NavItem icon={<Settings size={16} />} label="System Config" />
+        <nav className="flex flex-col gap-1">
+          <NavItem icon={<LayoutDashboard size={18} />} label="Dashboard" active />
+          <NavItem icon={<Activity size={18} />} label="Analytics" />
+          <NavItem icon={<ShieldAlert size={18} />} label="Security" />
+          <NavItem icon={<Layers size={18} />} label="Inventory" />
+          <NavItem icon={<BarChart3 size={18} />} label="Reports" />
+          <NavItem icon={<Settings size={18} />} label="Settings" />
         </nav>
 
         <div className="mt-auto">
-          <div className="glass-card bg-blue-600/5 border-blue-500/10 !p-3 rounded-xl">
-            <p className="text-[9px] text-gray-400 mb-0.5 font-medium">System Health</p>
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-[10px] font-bold text-emerald-400 uppercase">Optimal</span>
+          <div className="bg-slate-800/50 border border-slate-800 p-4 rounded-xl">
+            <p className="text-[10px] text-slate-500 mb-1 font-semibold uppercase tracking-wider">System Status</p>
+            <div className="flex items-center gap-2 text-sky-400 font-medium">
+              <div className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-pulse" />
+              <span className="text-xs uppercase">Operational</span>
             </div>
           </div>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-transparent via-transparent to-blue-500/5">
-        <header className="px-8 py-4 flex justify-between items-end shrink-0">
-          <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-              <span className="text-[9px] font-bold text-blue-500 tracking-widest uppercase">Ops Terminal</span>
-            </div>
-            <h2 className="text-3xl font-black tracking-tight">Factory <span className="gradient-text">Intelligence</span></h2>
-            <p className="text-gray-400 text-xs font-medium">Line 04 — AOI Ingest Pipeline</p>
-          </div>
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <header className="px-10 py-6 flex justify-between items-center shrink-0 border-b border-slate-800">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Factory Dashboard</h2>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="relative group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={14} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-sky-400 transition-colors" size={16} />
               <input 
                 type="text" 
                 placeholder="Search..." 
-                className="bg-gray-900/50 border border-white/5 rounded-xl py-2.5 pl-9 pr-4 focus:outline-none focus:border-blue-500/50 w-48 transition-all text-xs placeholder:text-gray-600 font-medium"
+                className="bg-slate-900 border border-slate-800 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:border-sky-500/50 w-64 transition-all text-sm"
               />
             </div>
-            <button className="p-2.5 bg-gray-900/50 rounded-xl border border-white/5 hover:bg-gray-800 transition-colors relative">
-              <Bell size={18} className="text-gray-400" />
-              <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full border-2 border-gray-950" />
+            <button className="p-2 bg-slate-900 rounded-lg border border-slate-800 hover:bg-slate-800 transition-colors">
+              <Bell size={20} className="text-slate-400" />
             </button>
           </div>
         </header>
 
-        <div className="flex-1 px-8 pb-6 flex flex-col gap-4 overflow-hidden">
+        <div className="flex-1 px-10 pb-8 mt-8 flex flex-col gap-6 overflow-hidden">
           {/* Stats Grid */}
-          <div className="grid grid-cols-4 gap-4 shrink-0">
-            <StatCard label="Total Inspected" value={stats.total_inspected} icon={<Layers className="text-blue-400" size={16} />} />
-            <StatCard label="Defects Found" value={stats.defects_found} icon={<ShieldAlert className="text-red-400" size={16} />} status="danger" />
-            <StatCard label="Inference Time" value={stats.inference_time} icon={<Zap className="text-yellow-400" size={16} />} />
-            <StatCard label="Factory Yield" value={stats.yield_rate} icon={<Activity className="text-emerald-400" size={16} />} status="success" />
+          <div className="grid grid-cols-4 gap-6 shrink-0">
+            <StatCard label="Total Scanned" value={stats.total_inspected} icon={<Layers className="text-sky-400" size={20} />} />
+            <StatCard label="Defects" value={stats.defects_found} icon={<ShieldAlert className="text-rose-400" size={20} />} status="danger" />
+            <StatCard label="Processing" value={stats.inference_time} icon={<Zap className="text-sky-400" size={20} />} />
+            <StatCard label="Efficiency" value={stats.yield_rate} icon={<Activity className="text-sky-400" size={20} />} status="success" />
           </div>
 
           {/* Main Grid */}
-          <div className="flex-1 grid grid-cols-3 gap-4 overflow-hidden min-h-0">
-            <div className="col-span-2 glass-card border-white/5 !p-5 flex flex-col overflow-hidden">
-              <div className="flex justify-between items-center mb-4 shrink-0">
+          <div className="flex-1 grid grid-cols-3 gap-6 overflow-hidden min-h-0">
+            <div className="col-span-2 minimal-card flex flex-col overflow-hidden">
+              <div className="flex justify-between items-center mb-6 shrink-0">
                 <div>
-                  <h3 className="text-lg font-bold">Live Inspection Feed</h3>
-                  <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider mt-0.5">Camera 01 — Optical Scanner</p>
+                  <h3 className="text-lg font-semibold text-white">Live Feed</h3>
+                  <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-medium">Station 01 — Optical</p>
                 </div>
                 <button 
                   onClick={handleScan}
                   disabled={isScanning}
-                  className={`px-5 py-2.5 rounded-xl font-black tracking-tight transition-all flex items-center gap-2 text-xs ${isScanning ? 'bg-blue-600/20 text-blue-400 cursor-not-allowed border border-blue-500/20' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-600/20 active:scale-95'}`}
+                  className={`px-6 py-2.5 rounded-lg font-bold transition-all flex items-center gap-2 text-sm ${isScanning ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-sky-500 hover:bg-sky-400 text-slate-950 active:scale-95'}`}
                 >
                   {isScanning ? (
                     <>
-                      <RefreshCw className="animate-spin" size={14} />
-                      ANALYZING...
+                      <RefreshCw className="animate-spin" size={16} />
+                      Analyzing...
                     </>
                   ) : (
                     <>
-                      <Zap size={14} fill="currentColor" />
-                      INITIATE SCAN
+                      <Zap size={16} fill="currentColor" />
+                      Scan Now
                     </>
                   )}
                 </button>
               </div>
               
-              <div className="flex-1 bg-gray-950 rounded-2xl relative overflow-hidden border border-white/5 shadow-inner group">
+              <div className="flex-1 bg-slate-950/50 rounded-xl relative overflow-hidden border border-slate-800 group">
                 {isScanning ? (
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="absolute inset-0"
                   >
-                    <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 shadow-[0_0_20px_#3b82f6] z-10 animate-scan-line" />
-                    <div className="absolute inset-0 bg-blue-500/5 grid grid-cols-6 grid-rows-6 opacity-20">
-                      {Array.from({length: 36}).map((_, i) => (
-                        <div key={i} className="border border-white/10" />
-                      ))}
-                    </div>
+                    <div className="animate-scan-line" />
                   </motion.div>
                 ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-700 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900 to-gray-950">
-                    <Activity size={48} className="mb-3 opacity-10" />
-                    <p className="text-base font-black tracking-tight opacity-30 uppercase">Pipeline Standby</p>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-800">
+                    <Activity size={48} className="mb-4 opacity-10" />
+                    <p className="text-sm font-semibold opacity-30 uppercase tracking-widest">Idle State</p>
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="glass-card flex flex-col bg-gray-950/40 !p-5 overflow-hidden">
-              <h3 className="text-lg font-bold mb-4 shrink-0 uppercase tracking-tight">Audit Logs</h3>
-              <div className="flex-1 overflow-y-auto pr-1.5 custom-scrollbar flex flex-col gap-2 min-h-0">
+            <div className="minimal-card flex flex-col overflow-hidden bg-[#141b2d]/50">
+              <h3 className="text-lg font-semibold text-white mb-6 shrink-0">Recent Logs</h3>
+              <div className="flex-1 overflow-y-auto pr-1.5 custom-scrollbar flex flex-col gap-3 min-h-0">
                 <AnimatePresence mode="popLayout">
                   {history.length > 0 ? history.map((item) => (
                     <DetectionItem 
@@ -195,19 +179,15 @@ export default function Dashboard() {
                       clean={item.status === 'CLEAN'} 
                     />
                   )) : (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-gray-600 text-center py-6"
-                    >
-                      <Box size={24} className="mx-auto mb-2 opacity-10" />
-                      <p className="text-[9px] font-bold uppercase tracking-widest opacity-30">No logs found</p>
-                    </motion.div>
+                    <div className="text-slate-800 text-center py-10">
+                      <Box size={32} className="mx-auto mb-3 opacity-10" />
+                      <p className="text-xs font-semibold opacity-30 uppercase tracking-widest">Empty</p>
+                    </div>
                   )}
                 </AnimatePresence>
               </div>
-              <button className="mt-4 w-full py-2.5 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 transition-all font-bold text-[9px] text-gray-500 uppercase tracking-widest shrink-0">
-                All Logs
+              <button className="mt-6 w-full py-3 bg-slate-800/50 border border-slate-800 rounded-lg hover:bg-slate-800 transition-all font-semibold text-xs text-slate-400 uppercase tracking-wider shrink-0">
+                View History
               </button>
             </div>
           </div>
@@ -219,26 +199,26 @@ export default function Dashboard() {
 
 function NavItem({ icon, label, active = false }) {
   return (
-    <div className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 group ${active ? 'nav-active' : 'hover:bg-white/5 text-gray-500 hover:text-gray-200'}`}>
-      <span className={active ? 'text-blue-400' : 'group-hover:scale-110 transition-transform'}>{icon}</span>
-      <span className="font-bold text-sm tracking-tight">{label}</span>
+    <div className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors group ${active ? 'nav-active' : 'text-slate-500 hover:text-slate-200 hover:bg-slate-800/50'}`}>
+      <span className={active ? 'text-sky-400' : 'group-hover:scale-105 transition-transform'}>{icon}</span>
+      <span className="font-semibold text-sm tracking-tight">{label}</span>
     </div>
   );
 }
 
 function StatCard({ label, value, icon, status = 'default' }) {
   return (
-    <div className="glass-card !p-4">
-      <div className="flex justify-between items-start mb-2">
-        <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">{label}</p>
-        <div className="p-1.5 bg-gray-950/50 rounded-lg border border-white/5">
+    <div className="minimal-card !p-5">
+      <div className="flex justify-between items-start mb-3">
+        <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{label}</p>
+        <div className="p-2 bg-slate-800/50 rounded-lg border border-slate-800">
           {icon}
         </div>
       </div>
       <div className="flex items-end gap-2">
-        <h4 className="text-3xl font-black tracking-tighter leading-none">{value}</h4>
-        <div className={`text-[8px] font-black px-1.5 py-0.5 rounded mb-1 ${status === 'danger' ? 'bg-red-500/10 text-red-400' : status === 'success' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'}`}>
-          {status === 'danger' ? 'WARN' : status === 'success' ? 'GOOD' : 'LIVE'}
+        <h4 className="text-3xl font-bold text-white tracking-tight">{value}</h4>
+        <div className={`text-[10px] font-bold px-1.5 py-0.5 rounded mb-1 uppercase ${status === 'danger' ? 'text-rose-400' : status === 'success' ? 'text-sky-400' : 'text-slate-500'}`}>
+          {status === 'danger' ? 'Alert' : status === 'success' ? 'Stable' : 'Live'}
         </div>
       </div>
     </div>
@@ -248,18 +228,18 @@ function StatCard({ label, value, icon, status = 'default' }) {
 function DetectionItem({ id, type, time, clean = false }) {
   return (
     <motion.div 
-      initial={{ x: -10, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      className="p-4 rounded-2xl bg-gray-900/50 border border-white/5 flex justify-between items-center group hover:border-white/10 transition-all"
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex justify-between items-center group hover:border-slate-700 transition-colors"
     >
       <div className="flex items-center gap-3">
-        <div className={`w-2 h-2 rounded-full ${clean ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 shadow-[0_0_8px_#ef4444]'}`} />
+        <div className={`w-2 h-2 rounded-full ${clean ? 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.3)]' : 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.3)]'}`} />
         <div>
-          <p className="text-xs font-black tracking-tight">{id}</p>
-          <p className={`text-[9px] font-black uppercase tracking-widest ${clean ? 'text-emerald-500' : 'text-red-500'}`}>{type}</p>
+          <p className="text-xs font-bold text-white tracking-tight">{id}</p>
+          <p className={`text-[10px] font-bold uppercase tracking-widest ${clean ? 'text-sky-400' : 'text-rose-400'}`}>{type}</p>
         </div>
       </div>
-      <span className="text-[9px] font-bold text-gray-600 group-hover:text-gray-200 transition-colors">{time}</span>
+      <span className="text-[10px] font-semibold text-slate-600 group-hover:text-slate-400 transition-colors">{time}</span>
     </motion.div>
   );
 }
