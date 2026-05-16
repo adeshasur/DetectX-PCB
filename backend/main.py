@@ -121,8 +121,8 @@ async def get_stats():
         return {
             "total_inspected": len(total),
             "defects_found": len(defects),
-            "yield_rate": f"{yield_rate:.1f}%",
-            "avg_inference_time": f"{sum(l.processing_time for l in total)/len(total)*1000:.1f}ms" if len(total) > 0 else "0ms"
+            "yield_rate": yield_rate,
+            "avg_inference_time": (sum(l.processing_time for l in total)/len(total)*1000) if len(total) > 0 else 0
         }
 
 if __name__ == "__main__":
