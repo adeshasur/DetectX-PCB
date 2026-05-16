@@ -1,11 +1,69 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Activity, ShieldAlert, Cpu, Box, LayoutDashboard, Settings, Bell, Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Activity, ShieldAlert, Cpu, Box, LayoutDashboard, Settings, Bell, Search, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Dashboard() {
   const [isScanning, setIsScanning] = useState(false);
+  const [stats, setStats] = useState({
+    total_inspected: "0",
+    defects_found: "0",
+    inference_time: "0ms",
+    yield_rate: "100%"
+  });
+  const [history, setHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchDashboardData = async () => {
+    try {
+      const [statsRes, historyRes] = await Promise.all([
+        fetch('http://localhost:8000/stats'),
+        fetch('http://localhost:8000/history?limit=5')
+      ]);
+      const statsData = await statsRes.json();
+      const historyData = await historyRes.json();
+      
+      setStats({
+        total_inspected: statsData.total_inspected.toString(),
+        defects_found: statsData.defects_found.toString(),
+        inference_time: statsData.avg_inference_time,
+        yield_rate: statsData.yield_rate
+      });
+      setHistory(historyData);
+    } catch (error) {
+      console.error("Failed to fetch dashboard data", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const handleScan = async () => {
+    setIsScanning(true);
+    try {
+      // Simulate a file upload for the scan
+      const formData = new FormData();
+      const blob = new Blob(["dummy content"], { type: 'image/jpeg' });
+      formData.append('file', blob, 'pcb_scan.jpg');
+
+      const response = await fetch('http://localhost:8000/detect', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        await fetchDashboardData();
+      }
+    } catch (error) {
+      console.error("Scan failed", error);
+    } finally {
+      setIsScanning(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex text-slate-200">
@@ -52,10 +110,10 @@ export default function Dashboard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-4 gap-6 mb-10">
-          <StatCard label="Total Inspected" value="12,842" delta="+12%" />
-          <StatCard label="Defects Found" value="142" delta="-3%" status="danger" />
-          <StatCard label="Inference Time" value="42ms" delta="Optimal" />
-          <StatCard label="Yield Rate" value="98.9%" delta="+0.4%" status="success" />
+          <StatCard label="Total Inspected" value={stats.total_inspected} delta="+12%" />
+          <StatCard label="Defects Found" value={stats.defects_found} delta="-3%" status="danger" />
+          <StatCard label="Inference Time" value={stats.inference_time} delta="Optimal" />
+          <StatCard label="Yield Rate" value={stats.yield_rate} delta="+0.4%" status="success" />
         </div>
 
         {/* Live Monitoring Section */}
@@ -65,10 +123,16 @@ export default function Dashboard() {
               <h3 className="text-xl font-semibold">Live Inspection Stream</h3>
               <div className="flex gap-2">
                 <button 
-                  onClick={() => setIsScanning(!isScanning)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${isScanning ? 'bg-red-500/20 text-red-500' : 'bg-blue-600 text-white'}`}
+                  onClick={handleScan}
+                  disabled={isScanning}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${isScanning ? 'bg-blue-600/50 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
                 >
-                  {isScanning ? 'Stop Scan' : 'Start Scan'}
+                  {isScanning ? (
+                    <>
+                      <RefreshCw className="animate-spin" size={18} />
+                      Analyzing...
+                    </>
+                  ) : 'Start New Scan'}
                 </button>
               </div>
             </div>
@@ -97,10 +161,17 @@ export default function Dashboard() {
           <div className="glass-card flex flex-col">
             <h3 className="text-xl font-semibold mb-6">Recent Detections</h3>
             <div className="flex flex-col gap-4">
-              <DetectionItem id="PCB-X902" type="Solder Bridge" time="2m ago" />
-              <DetectionItem id="PCB-X901" type="Missing Component" time="5m ago" />
-              <DetectionItem id="PCB-X899" type="CLEAN" time="12m ago" clean />
-              <DetectionItem id="PCB-X898" type="CLEAN" time="15m ago" clean />
+              {history.length > 0 ? history.map((item) => (
+                <DetectionItem 
+                  key={item.id} 
+                  id={item.board_id} 
+                  type={item.status} 
+                  time={new Date(item.created_at).toLocaleTimeString()} 
+                  clean={item.status === 'CLEAN'} 
+                />
+              )) : (
+                <p className="text-slate-500 text-sm text-center py-4 italic">No detections yet</p>
+              )}
             </div>
             <button className="mt-auto w-full py-3 border border-white/10 rounded-lg hover:bg-white/5 transition-colors">
               View Detailed Logs
