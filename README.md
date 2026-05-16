@@ -1,5 +1,7 @@
 # 🛡️ DetectX-PCB
 
+![Dashboard Preview](assets/dashboard.PNG)
+
 **DetectX-PCB** is a premium, AI-native defect detection system engineered for high-speed printed circuit board (PCB) manufacturing. By combining state-of-the-art computer vision (YOLOv8) with a high-performance, minimalist dashboard, it provides real-time identification of manufacturing defects with millisecond latency.
 
 ---
