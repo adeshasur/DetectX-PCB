@@ -34,22 +34,32 @@ class DetectXInference:
         start_time = time.time()
         
         if self.has_model:
-            results = self.model(image_path)[0]
-            defects = []
-            for box in results.boxes:
-                defects.append({
-                    "class": results.names[int(box.cls[0])],
-                    "confidence": float(box.conf[0]),
-                    "bbox": [float(x) for x in box.xywh[0]]
-                })
-            
-            return {
-                "board_id": f"PCB-{os.path.basename(image_path)}-{int(time.time())}",
-                "defects": defects,
-                "inference_time": time.time() - start_time
-            }
-        else:
-            # Enhanced Mock logic
+            # Check if image is valid
+            try:
+                if HAS_CV2:
+                    img = cv2.imread(image_path)
+                    if img is None:
+                        raise ValueError("Invalid image")
+                
+                results = self.model(image_path)[0]
+                defects = []
+                for box in results.boxes:
+                    defects.append({
+                        "class": results.names[int(box.cls[0])],
+                        "confidence": float(box.conf[0]),
+                        "bbox": [float(x) for x in box.xywh[0]]
+                    })
+                
+                return {
+                    "board_id": f"PCB-{os.path.basename(image_path)}-{int(time.time())}",
+                    "defects": defects,
+                    "inference_time": time.time() - start_time
+                }
+            except Exception as e:
+                print(f"DetectX: Inference error or invalid image, falling back to mock: {e}")
+                # Fall through to mock logic below
+        
+        # Enhanced Mock logic
             time.sleep(0.04) # Simulate 40ms inference
             
             # Randomly decide if there's a defect

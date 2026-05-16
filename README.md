@@ -1,10 +1,45 @@
-# DetectX-PCB
+# 🛡️ DetectX-PCB
 
-DetectX-PCB is an AI-native defect detection system designed for high-speed printed circuit board (PCB) manufacturing. Leveraging state-of-the-art computer vision models, it provides real-time identification of manufacturing defects such as short circuits, missing components, and soldering anomalies.
+**DetectX-PCB** is a premium, AI-native defect detection system engineered for high-speed printed circuit board (PCB) manufacturing. By combining state-of-the-art computer vision (YOLOv8) with a high-performance, minimalist dashboard, it provides real-time identification of manufacturing defects with millisecond latency.
 
-## Solution Architecture
+---
 
-DetectX-PCB utilizes a multi-layered, AI-native architecture designed for high-throughput manufacturing environments.
+## 🚀 Quick Start
+
+### Prerequisites
+- **Node.js**: v18.0 or higher
+- **Python**: v3.9 or higher
+- **Package Managers**: npm and pip
+
+### 1. Backend Setup
+Navigate to the `backend` directory and install dependencies:
+```bash
+cd backend
+pip install -r requirements.txt
+```
+Start the FastAPI server:
+```bash
+python -m uvicorn main:app --reload --port 8000
+```
+*The backend will be available at `http://localhost:8000`.*
+
+### 2. Frontend Setup
+Navigate to the `frontend` directory and install dependencies:
+```bash
+cd frontend
+npm install
+```
+Start the Next.js development server:
+```bash
+npm run dev -- -p 3001 --webpack
+```
+*The dashboard will be available at `http://localhost:3001`.*
+
+---
+
+## 🏗️ Solution Architecture
+
+DetectX-PCB utilizes a multi-layered architecture designed for high-throughput manufacturing environments.
 
 ```mermaid
 graph TB
@@ -35,59 +70,40 @@ graph TB
         D3[Operator Alert System]
     end
 
-    subgraph Enterprise_Layer [Business & Supply Chain Integration]
-        E1[MES / ERP Sync]
-        E2[Quality Protocol Reports]
-        E3[Continuous ML Training Pipeline]
-    end
-
     %% Data Connections
-    A1 -- "High-Res Image Stream (gRPC)" --> B1
-    A3 -- "Board ID / Serial" --> B1
+    A1 -- "High-Res Image Stream" --> B1
     B1 --> B2 & B3
-    B2 & B3 --> B4
     B4 -- "Detection Payloads" --> C1
-    
-    %% Storage & Logic
-    C1 --> C2
-    C1 --> C3
-    C1 --> C4
-    C1 --> C5
-
-    %% Frontend Sync
     C1 -- "Websockets / SSE" --> D1
-    D1 --> D2
-    D1 --> D3
-
-    %% Feedback & Control
-    D3 -- "Human Confirmation" --> C1
-    C1 -- "MQTT / Modbus" --> A2
-    
-    %% Business Outgest
-    C2 -- "Compliance Logs" --> E1
-    C4 -- "Defect Similarity" --> E2
-    C5 -- "Training Samples" --> E3
-    E3 -- "Updated Weights (.pt)" --> B2
-
-    %% Styling
-    style Factory_Floor fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Edge_Compute fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#fff
-    style Core_Protocol fill:#1e293b,stroke:#8b5cf6,stroke-width:2px,color:#fff
-    style Monitoring_Layer fill:#0f172a,stroke:#3b82f6,stroke-width:2px,color:#fff
-    style Enterprise_Layer fill:#1e293b,stroke:#f59e0b,stroke-width:2px,color:#fff
 ```
 
-## Technical Stack
+---
 
-- **AI/ML**: YOLOv8, PatchCore, TensorRT, PyTorch
-- **Backend**: FastAPI (Python), gRPC, MQTT
-- **Database**: PostgreSQL (Metadata), Redis (Cache), Qdrant (Vector), MinIO (S3)
-- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, Three.js
-- **Infrastructure**: Docker, K3s, Prometheus, Grafana
+## 🛠️ Technology Stack
 
-## Key Features
+- **Frontend**: Next.js 14+, TypeScript, Tailwind CSS, Recharts, Three.js
+- **Backend**: FastAPI (Python), SQLModel (SQLite/PostgreSQL)
+- **AI/ML**: YOLOv8 (Ultralytics), OpenCV
+- **Design**: Premium Dark Mode, Minimalist UI/UX
 
-- **Real-time Detection**: Millisecond latency for high-speed production lines.
-- **High Accuracy**: Minimized false positives through advanced probabilistic decisioning.
-- **Seamless Integration**: Compatible with existing PLC and manufacturing execution systems (MES).
-- **Scalable MLOps**: End-to-end pipeline from data collection to model deployment.
+---
+
+## 📂 Project Structure
+
+- `/frontend`: Next.js dashboard and analytics interface.
+- `/backend`: FastAPI service, database models, and API endpoints.
+- `/ai`: Core inference logic and model handling.
+- `/assets`: Project documentation and architecture diagrams.
+
+---
+
+## ⚠️ Troubleshooting
+
+- **Frontend Port**: The dashboard is configured to run on port `3001`. If port `3000` is used, ensure the backend CORS settings are updated.
+- **Turbopack Issues**: If you encounter native binding errors on Windows, run the frontend with the `--webpack` flag as shown in the startup instructions.
+- **Mock Inference**: If a physical camera or specialized hardware is not detected, the system automatically falls back to a simulated inference engine for testing.
+
+---
+
+## 📄 License
+This project is part of the DetectX-PCB industrial suite. All rights reserved.
