@@ -1,10 +1,8 @@
-# DetectX-PCB
+# DetectX-PCB Architecture
 
-DetectX-PCB is an AI-native defect detection system designed for high-speed printed circuit board (PCB) manufacturing. Leveraging state-of-the-art computer vision models, it provides real-time identification of manufacturing defects such as short circuits, missing components, and soldering anomalies.
+This document outlines the multi-layered, AI-native architecture designed for high-speed PCB defect detection.
 
-## Solution Architecture
-
-DetectX-PCB utilizes a multi-layered, AI-native architecture designed for high-throughput manufacturing environments.
+## System Overview
 
 ```mermaid
 graph TB
@@ -77,17 +75,19 @@ graph TB
     style Enterprise_Layer fill:#1e293b,stroke:#f59e0b,stroke-width:2px,color:#fff
 ```
 
-## Technical Stack
+## Layer Descriptions
 
-- **AI/ML**: YOLOv8, PatchCore, TensorRT, PyTorch
-- **Backend**: FastAPI (Python), gRPC, MQTT
-- **Database**: PostgreSQL (Metadata), Redis (Cache), Qdrant (Vector), MinIO (S3)
-- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, Three.js
-- **Infrastructure**: Docker, K3s, Prometheus, Grafana
+### 1. Factory Floor Hardware
+Integrates directly with the manufacturing line using high-resolution AOI (Automated Optical Inspection) cameras and PLC controllers for real-time board handling.
 
-## Key Features
+### 2. AI Edge Layer
+Optimized for minimum latency. YOLOv8 handles rapid object detection while PatchCore identifies unsupervised anomalies. All models are optimized via TensorRT for edge performance.
 
-- **Real-time Detection**: Millisecond latency for high-speed production lines.
-- **High Accuracy**: Minimized false positives through advanced probabilistic decisioning.
-- **Seamless Integration**: Compatible with existing PLC and manufacturing execution systems (MES).
-- **Scalable MLOps**: End-to-end pipeline from data collection to model deployment.
+### 3. Core Protocol Layer
+The "brain" of the solution. Manages the business logic, metadata persistence, and large-scale vector similarity search for historical defect analysis.
+
+### 4. Frontend & Experience
+A premium, dark-mode dashboard providing operators with real-time alerts and 3D defect mapping for immediate action.
+
+### 5. Enterprise Integration
+Connects the shop floor to the top floor. Syncs quality data with MES/ERP systems and feeds a continuous learning pipeline for model improvement.
