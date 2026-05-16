@@ -1,8 +1,10 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 from pydantic import BaseModel
 from typing import List, Optional
+import os
 
 app = FastAPI(title="DetectX-PCB AI API")
 
@@ -14,6 +16,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve static frontend files
+# This allows camera access via http://localhost:8000/static/preview.html
+frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
+app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 
 class Defect(BaseModel):
     id: str
