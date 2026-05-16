@@ -29,3 +29,5 @@ Thumbs.db
 *.pt
 *.onnx
 *.engine
+*.db
+temp_*
