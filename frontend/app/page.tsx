@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Activity, ShieldAlert, Cpu, Box, LayoutDashboard, Settings, Bell, Search, RefreshCw } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Activity, ShieldAlert, Cpu, Box, LayoutDashboard, Settings, Bell, Search, RefreshCw, Zap, Layers, BarChart3 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Dashboard() {
   const [isScanning, setIsScanning] = useState(false);
@@ -13,7 +13,6 @@ export default function Dashboard() {
     yield_rate: "100%"
   });
   const [history, setHistory] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const fetchDashboardData = async () => {
     try {
@@ -33,8 +32,6 @@ export default function Dashboard() {
       setHistory(historyData);
     } catch (error) {
       console.error("Failed to fetch dashboard data", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -45,7 +42,6 @@ export default function Dashboard() {
   const handleScan = async () => {
     setIsScanning(true);
     try {
-      // Simulate a file upload for the scan
       const formData = new FormData();
       const blob = new Blob(["dummy content"], { type: 'image/jpeg' });
       formData.append('file', blob, 'pcb_scan.jpg');
@@ -66,151 +62,184 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen flex text-slate-200">
+    <div className="h-screen bg-[#030712] flex text-gray-100 selection:bg-blue-500/30 overflow-hidden text-sm">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-white/10 p-6 flex flex-col gap-8">
+      <aside className="w-60 border-r border-white/5 bg-gray-950/50 backdrop-blur-2xl p-5 flex flex-col gap-6 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center pulse-primary">
-            <Cpu className="text-white" />
+          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 pulse-glow">
+            <Cpu className="text-white" size={18} />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">DetectX<span className="text-blue-500">PCB</span></h1>
+          <div>
+            <h1 className="text-lg font-black tracking-tighter leading-none">DetectX<span className="text-blue-500">PCB</span></h1>
+            <p className="text-[7px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Protocol v4.2.0</p>
+          </div>
         </div>
 
-        <nav className="flex flex-col gap-2">
-          <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
-          <NavItem icon={<Activity size={20} />} label="Live Feed" />
-          <NavItem icon={<ShieldAlert size={20} />} label="Alerts" />
-          <NavItem icon={<Box size={20} />} label="Inventory" />
-          <NavItem icon={<Settings size={20} />} label="Settings" />
+        <nav className="flex flex-col gap-0.5">
+          <NavItem icon={<LayoutDashboard size={16} />} label="Dashboard" active />
+          <NavItem icon={<Activity size={16} />} label="Live Analytics" />
+          <NavItem icon={<ShieldAlert size={16} />} label="Security Vault" />
+          <NavItem icon={<Layers size={16} />} label="Line Control" />
+          <NavItem icon={<BarChart3 size={16} />} label="Yield Reports" />
+          <NavItem icon={<Settings size={16} />} label="System Config" />
         </nav>
+
+        <div className="mt-auto">
+          <div className="glass-card bg-blue-600/5 border-blue-500/10 !p-3 rounded-xl">
+            <p className="text-[9px] text-gray-400 mb-0.5 font-medium">System Health</p>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+              <span className="text-[10px] font-bold text-emerald-400 uppercase">Optimal</span>
+            </div>
+          </div>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <header className="flex justify-between items-center mb-10">
+      <main className="flex-1 flex flex-col overflow-hidden bg-gradient-to-br from-transparent via-transparent to-blue-500/5">
+        <header className="px-8 py-4 flex justify-between items-end shrink-0">
           <div>
-            <h2 className="text-3xl font-bold">Factory Protocol <span className="gradient-text">Active</span></h2>
-            <p className="text-slate-400 mt-1">Monitoring Line 4 - High Precision AOI Ingest</p>
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+              <span className="text-[9px] font-bold text-blue-500 tracking-widest uppercase">Ops Terminal</span>
+            </div>
+            <h2 className="text-3xl font-black tracking-tight">Factory <span className="gradient-text">Intelligence</span></h2>
+            <p className="text-gray-400 text-xs font-medium">Line 04 — AOI Ingest Pipeline</p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+          
+          <div className="flex items-center gap-3">
+            <div className="relative group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-400 transition-colors" size={14} />
               <input 
                 type="text" 
-                placeholder="Search PCB ID..." 
-                className="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:border-blue-500 w-64"
+                placeholder="Search..." 
+                className="bg-gray-900/50 border border-white/5 rounded-xl py-2.5 pl-9 pr-4 focus:outline-none focus:border-blue-500/50 w-48 transition-all text-xs placeholder:text-gray-600 font-medium"
               />
             </div>
-            <button className="p-2 bg-white/5 rounded-full border border-white/10">
-              <Bell size={20} />
+            <button className="p-2.5 bg-gray-900/50 rounded-xl border border-white/5 hover:bg-gray-800 transition-colors relative">
+              <Bell size={18} className="text-gray-400" />
+              <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full border-2 border-gray-950" />
             </button>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-emerald-500" />
           </div>
         </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-4 gap-6 mb-10">
-          <StatCard label="Total Inspected" value={stats.total_inspected} delta="+12%" />
-          <StatCard label="Defects Found" value={stats.defects_found} delta="-3%" status="danger" />
-          <StatCard label="Inference Time" value={stats.inference_time} delta="Optimal" />
-          <StatCard label="Yield Rate" value={stats.yield_rate} delta="+0.4%" status="success" />
-        </div>
+        <div className="flex-1 px-8 pb-6 flex flex-col gap-4 overflow-hidden">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-4 gap-4 shrink-0">
+            <StatCard label="Total Inspected" value={stats.total_inspected} icon={<Layers className="text-blue-400" size={16} />} />
+            <StatCard label="Defects Found" value={stats.defects_found} icon={<ShieldAlert className="text-red-400" size={16} />} status="danger" />
+            <StatCard label="Inference Time" value={stats.inference_time} icon={<Zap className="text-yellow-400" size={16} />} />
+            <StatCard label="Factory Yield" value={stats.yield_rate} icon={<Activity className="text-emerald-400" size={16} />} status="success" />
+          </div>
 
-        {/* Live Monitoring Section */}
-        <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 glass-card min-h-[400px] flex flex-col">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-semibold">Live Inspection Stream</h3>
-              <div className="flex gap-2">
+          {/* Main Grid */}
+          <div className="flex-1 grid grid-cols-3 gap-4 overflow-hidden min-h-0">
+            <div className="col-span-2 glass-card border-white/5 !p-5 flex flex-col overflow-hidden">
+              <div className="flex justify-between items-center mb-4 shrink-0">
+                <div>
+                  <h3 className="text-lg font-bold">Live Inspection Feed</h3>
+                  <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider mt-0.5">Camera 01 — Optical Scanner</p>
+                </div>
                 <button 
                   onClick={handleScan}
                   disabled={isScanning}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${isScanning ? 'bg-blue-600/50 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
+                  className={`px-5 py-2.5 rounded-xl font-black tracking-tight transition-all flex items-center gap-2 text-xs ${isScanning ? 'bg-blue-600/20 text-blue-400 cursor-not-allowed border border-blue-500/20' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-600/20 active:scale-95'}`}
                 >
                   {isScanning ? (
                     <>
-                      <RefreshCw className="animate-spin" size={18} />
-                      Analyzing...
+                      <RefreshCw className="animate-spin" size={14} />
+                      ANALYZING...
                     </>
-                  ) : 'Start New Scan'}
+                  ) : (
+                    <>
+                      <Zap size={14} fill="currentColor" />
+                      INITIATE SCAN
+                    </>
+                  )}
                 </button>
               </div>
-            </div>
-            
-            <div className="flex-1 bg-black/40 rounded-xl relative overflow-hidden border border-white/5 flex items-center justify-center">
-              {isScanning ? (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="absolute inset-0"
-                >
-                  <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/50 shadow-[0_0_15px_#3b82f6] animate-scan" />
-                  <div className="p-8">
-                    <div className="w-full h-full border-2 border-dashed border-blue-500/30 rounded-lg" />
+              
+              <div className="flex-1 bg-gray-950 rounded-2xl relative overflow-hidden border border-white/5 shadow-inner group">
+                {isScanning ? (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute inset-0"
+                  >
+                    <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 shadow-[0_0_20px_#3b82f6] z-10 animate-scan-line" />
+                    <div className="absolute inset-0 bg-blue-500/5 grid grid-cols-6 grid-rows-6 opacity-20">
+                      {Array.from({length: 36}).map((_, i) => (
+                        <div key={i} className="border border-white/10" />
+                      ))}
+                    </div>
+                  </motion.div>
+                ) : (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-700 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gray-900 to-gray-950">
+                    <Activity size={48} className="mb-3 opacity-10" />
+                    <p className="text-base font-black tracking-tight opacity-30 uppercase">Pipeline Standby</p>
                   </div>
-                </motion.div>
-              ) : (
-                <div className="text-slate-500 text-center">
-                  <Activity size={48} className="mx-auto mb-4 opacity-20" />
-                  <p>Stream Standby - Waiting for Trigger</p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="glass-card flex flex-col">
-            <h3 className="text-xl font-semibold mb-6">Recent Detections</h3>
-            <div className="flex flex-col gap-4">
-              {history.length > 0 ? history.map((item) => (
-                <DetectionItem 
-                  key={item.id} 
-                  id={item.board_id} 
-                  type={item.status} 
-                  time={new Date(item.created_at).toLocaleTimeString()} 
-                  clean={item.status === 'CLEAN'} 
-                />
-              )) : (
-                <p className="text-slate-500 text-sm text-center py-4 italic">No detections yet</p>
-              )}
+            <div className="glass-card flex flex-col bg-gray-950/40 !p-5 overflow-hidden">
+              <h3 className="text-lg font-bold mb-4 shrink-0 uppercase tracking-tight">Audit Logs</h3>
+              <div className="flex-1 overflow-y-auto pr-1.5 custom-scrollbar flex flex-col gap-2 min-h-0">
+                <AnimatePresence mode="popLayout">
+                  {history.length > 0 ? history.map((item) => (
+                    <DetectionItem 
+                      key={item.id} 
+                      id={item.board_id} 
+                      type={item.status} 
+                      time={new Date(item.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} 
+                      clean={item.status === 'CLEAN'} 
+                    />
+                  )) : (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-gray-600 text-center py-6"
+                    >
+                      <Box size={24} className="mx-auto mb-2 opacity-10" />
+                      <p className="text-[9px] font-bold uppercase tracking-widest opacity-30">No logs found</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <button className="mt-4 w-full py-2.5 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 transition-all font-bold text-[9px] text-gray-500 uppercase tracking-widest shrink-0">
+                All Logs
+              </button>
             </div>
-            <button className="mt-auto w-full py-3 border border-white/10 rounded-lg hover:bg-white/5 transition-colors">
-              View Detailed Logs
-            </button>
           </div>
         </div>
       </main>
-
-      <style jsx>{`
-        @keyframes scan {
-          from { top: 0%; }
-          to { top: 100%; }
-        }
-        .animate-scan {
-          animation: scan 3s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
 
 function NavItem({ icon, label, active = false }) {
   return (
-    <div className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-colors ${active ? 'bg-blue-600/10 text-blue-500 border border-blue-500/20' : 'hover:bg-white/5 text-slate-400'}`}>
-      {icon}
-      <span className="font-medium">{label}</span>
+    <div className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-300 group ${active ? 'nav-active' : 'hover:bg-white/5 text-gray-500 hover:text-gray-200'}`}>
+      <span className={active ? 'text-blue-400' : 'group-hover:scale-110 transition-transform'}>{icon}</span>
+      <span className="font-bold text-sm tracking-tight">{label}</span>
     </div>
   );
 }
 
-function StatCard({ label, value, delta, status = 'default' }) {
+function StatCard({ label, value, icon, status = 'default' }) {
   return (
-    <div className="glass-card">
-      <p className="text-slate-400 text-sm">{label}</p>
-      <div className="flex items-end gap-3 mt-2">
-        <h4 className="text-3xl font-bold">{value}</h4>
-        <span className={`text-xs font-semibold mb-1 ${status === 'danger' ? 'text-red-500' : status === 'success' ? 'text-emerald-500' : 'text-blue-500'}`}>
-          {delta}
-        </span>
+    <div className="glass-card !p-4">
+      <div className="flex justify-between items-start mb-2">
+        <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">{label}</p>
+        <div className="p-1.5 bg-gray-950/50 rounded-lg border border-white/5">
+          {icon}
+        </div>
+      </div>
+      <div className="flex items-end gap-2">
+        <h4 className="text-3xl font-black tracking-tighter leading-none">{value}</h4>
+        <div className={`text-[8px] font-black px-1.5 py-0.5 rounded mb-1 ${status === 'danger' ? 'bg-red-500/10 text-red-400' : status === 'success' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'}`}>
+          {status === 'danger' ? 'WARN' : status === 'success' ? 'GOOD' : 'LIVE'}
+        </div>
       </div>
     </div>
   );
@@ -218,12 +247,19 @@ function StatCard({ label, value, delta, status = 'default' }) {
 
 function DetectionItem({ id, type, time, clean = false }) {
   return (
-    <div className="p-4 rounded-xl bg-white/5 border border-white/5 flex justify-between items-center">
-      <div>
-        <p className="text-sm font-bold">{id}</p>
-        <p className={`text-xs ${clean ? 'text-emerald-500' : 'text-red-500'}`}>{type}</p>
+    <motion.div 
+      initial={{ x: -10, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      className="p-4 rounded-2xl bg-gray-900/50 border border-white/5 flex justify-between items-center group hover:border-white/10 transition-all"
+    >
+      <div className="flex items-center gap-3">
+        <div className={`w-2 h-2 rounded-full ${clean ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-red-500 shadow-[0_0_8px_#ef4444]'}`} />
+        <div>
+          <p className="text-xs font-black tracking-tight">{id}</p>
+          <p className={`text-[9px] font-black uppercase tracking-widest ${clean ? 'text-emerald-500' : 'text-red-500'}`}>{type}</p>
+        </div>
       </div>
-      <span className="text-[10px] text-slate-500">{time}</span>
-    </div>
+      <span className="text-[9px] font-bold text-gray-600 group-hover:text-gray-200 transition-colors">{time}</span>
+    </motion.div>
   );
 }
